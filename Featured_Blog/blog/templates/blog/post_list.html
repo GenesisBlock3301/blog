@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% for post in posts %}
+        <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title"><a href="{% url 'detail' post.id %}">{{ post.title | capfirst }}</a></h2>
+            <p class="card-text">{{ post.content | truncatechars:"150" }}</p>
+            <a href="{% url 'detail' post.id %}" class="btn btn-primary">Read more-></a>
+        </div>
+        <div class="card-footer text-muted">
+            Posted on {{ post.pub_date }} by <a href="#">{{ post.author.name }}</a>
+        </div>
+        </div>
+        {% empty %}
+        <p>There have no post</p>
+
+    {% endfor %}
+        <!-- Pagination -->
+        <ul class="pagination justify-content-center mb-4">
+          <li class="page-item">
+              {% if posts.has_previous %}
+            <a href="?page={{ post.previous_page_number }}">← Prev</a> |
+              {% endif %}
+          </li>
+          <li class="page-item disabled">
+              {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">Next →</a>
+              {% endif %}
+          </li>
+         <span>{{ posts.number }} of {{ posts.paginator.num_pages }}</span>
+        </ul>
+{% endblock %}
